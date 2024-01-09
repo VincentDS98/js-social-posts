@@ -65,17 +65,19 @@ posts.forEach((post,i,arr) => {
    <div class="post__header">
        <div class="post-meta">                    
            <div class="post-meta__icon">
-               <img class="profile-pic" src="https://unsplash.it/300/300?image=15" alt="Phil Mangione">                    
+               <img class="profile-pic" src="${post.author.image}" alt="${post.author.name}">                    
            </div>
            <div class="post-meta__data">
-               <div class="post-meta__author">Phil Mangione</div>
-               <div class="post-meta__time">4 mesi fa</div>
+               <div class="post-meta__author">${post.author.name}</div>
+               <div class="post-meta__time">${post.created}</div>
            </div>                    
        </div>
    </div>
-   <div class="post__text">Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.</div>
+   <div class="post__text">
+    ${post.content}
+   </div>
    <div class="post__image">
-       <img src="https://unsplash.it/600/300?image=171" alt="">
+       <img src="${post.media}" alt="${post.id}">
    </div>
    <div class="post__footer">
        <div class="likes js-likes">
@@ -86,11 +88,39 @@ posts.forEach((post,i,arr) => {
                </a>
            </div>
            <div class="likes__counter">
-               Piace a <b id="like-counter-1" class="js-likes-counter">80</b> persone
+               Piace a <b id="like-counter-${post.id}" class="js-likes-counter">${post.likes}</b> persone
            </div>
        </div> 
    </div>            
 </div>
    `
 
+});
+
+
+
+const allLikeButtons = document.querySelectorAll('.js-like-button')
+console.log('allLikeButton',allLikeButtons,typeof allLikeButtons);
+
+const likedPost = [];
+
+allLikeButtons.forEach((singleLikeButton, index) => {
+    singleLikeButton.addEventListener('click',function(event) {
+
+        event.preventDefault(); 
+
+        if(!likedPost.includes(posts[index].id)){
+            
+        singleLikeButton.classList.add('like-button--liked');
+
+        likedPost.push(posts[index].id);
+        
+
+        const postLikesCounter = document.getElementById('like-counter-' + posts[index].id);
+        const currentLikesNumber = parseInt(postLikesCounter.innerText);
+        postLikesCounter.innerText = currentLikesNumber + 1;
+        }
+
+       
+    });
 });
